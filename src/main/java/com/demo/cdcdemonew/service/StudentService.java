@@ -31,4 +31,42 @@ public class StudentService {
 
         jdbcTemplate.batchUpdate(sql, batchArgs);
     }
+
+    public long insertOneByOne(int count) {
+        long start = System.nanoTime();
+
+        for (int i = 1; i <= count; i++) {
+            // Example data (change if you want)
+            String fullName = "Student " + i;
+            int age = 18 + (i % 10);
+
+            jdbcTemplate.update(
+                    "INSERT INTO student (full_name, age, created_at) VALUES (?, ?, NOW())",
+                    fullName, age
+            );
+        }
+
+        long end = System.nanoTime();
+        return (end - start) / 1_000_000; // ns -> ms
+    }
+
+    public long insertBatch(int count) {
+        long start = System.nanoTime();
+
+        // Build batch args
+        List<Object[]> batchArgs = new ArrayList<>(count);
+        for (int i = 1; i <= count; i++) {
+            String fullName = "Student " + i;
+            int age = 18 + (i % 10);
+            batchArgs.add(new Object[]{fullName, age});
+        }
+
+        jdbcTemplate.batchUpdate(
+                "INSERT INTO student (full_name, age, created_at) VALUES (?, ?, NOW())",
+                batchArgs
+        );
+
+        long end = System.nanoTime();
+        return (end - start) / 1_000_000;
+    }
 }

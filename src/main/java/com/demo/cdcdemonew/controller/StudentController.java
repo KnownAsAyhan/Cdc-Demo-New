@@ -13,18 +13,6 @@ public class StudentController {
         this.studentService = studentService;
     }
 
-//    @GetMapping("/batch")
-//    public String insertBatch(@RequestParam int count) {
-//
-//        long start = System.currentTimeMillis();
-//
-//        studentService.batchInsertStudents(count);
-//
-//        long end = System.currentTimeMillis();
-//
-//        return "Inserted " + count + " students in " + (end - start) + " ms";
-//    }
-
     @GetMapping("/one-by-one")
     public String insertOneByOne(@RequestParam(defaultValue = "1000") int count) {
         long ms = studentService.insertOneByOne(count);
@@ -36,4 +24,17 @@ public class StudentController {
         long ms = studentService.insertBatch(count);
         return "Inserted " + count + " students (batch) in " + ms + " ms";
     }
+
+    //    @GetMapping("/batch")
+//    public String insertBatch(@RequestParam int count) {
+//
+//        long start = System.currentTimeMillis();
+//
+//        studentService.batchInsertStudents(count);
+//
+//        long end = System.currentTimeMillis();
+//
+//        return "Inserted " + count + " students in " + (end - start) + " ms";
+//    }
+
 }

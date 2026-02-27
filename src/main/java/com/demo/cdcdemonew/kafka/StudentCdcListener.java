@@ -16,9 +16,9 @@ public class StudentCdcListener {
             JsonNode root = objectMapper.readTree(message);
 
             // Debezium important fields
-            String op = root.path("op").asText();          // c, u, d, r     create  update delete read     read(It loads existing data from DB))
-            JsonNode after = root.path("after");          // new row after change
-            JsonNode before = root.path("before");        // old row before change
+            String op = root.path("op").asText();
+            JsonNode after = root.path("after");
+            JsonNode before = root.path("before");
 
             System.out.println("=== CDC EVENT ===");
             System.out.println("op = " + op);

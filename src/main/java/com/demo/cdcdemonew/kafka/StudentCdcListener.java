@@ -15,18 +15,26 @@ public class StudentCdcListener {
         try {
             JsonNode root = objectMapper.readTree(message);
 
-            // Debezium important fields
-            String op = root.path("op").asText();
+            // Debezium operation type: c, u, d, r
+            String op = root.path("op").asText("unknown");
+
+            // "after" exists for create/update/read, usually null for delete
             JsonNode after = root.path("after");
+            // "before" exists for update/delete, usually null for create/read
             JsonNode before = root.path("before");
 
-            System.out.println("=== CDC EVENT ===");
-            System.out.println("op = " + op);
-            System.out.println("after = " + after);
-            System.out.println("before = " + before);
-            System.out.println("================");
+            System.out.println("\n=== CDC EVENT ===");
+            System.out.println("op     = " + op);
+            System.out.println("before = " + (before.isMissingNode() ? "missing" : before.toString()));
+            System.out.println("after  = " + (after.isMissingNode() ? "missing" : after.toString()));
+            System.out.println("=================\n");
+
         } catch (Exception e) {
-            System.out.println("Could not parse message: " + message);
+            System.out.println("\n!!! CDC PARSE ERROR !!!");
+            System.out.println("Could not parse message as JSON.");
+            System.out.println("Raw message: " + message);
+            System.out.println("Error: " + e.getMessage());
+            System.out.println("=======================\n");
         }
     }
 }

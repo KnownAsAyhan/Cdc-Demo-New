@@ -69,4 +69,16 @@ public class StudentService {
         long end = System.nanoTime();
         return (end - start) / 1_000_000;
     }
+
+    public int updateAge(long id, int newAge) {
+        String sql = "UPDATE student SET age = ? WHERE id = ?";
+        return jdbcTemplate.update(sql, newAge, id);
+    }
+
+    public int deleteById(long id) {
+        String sql = "DELETE FROM student WHERE id = ?";
+        return jdbcTemplate.update(sql, id);
+    }
+
+
 }

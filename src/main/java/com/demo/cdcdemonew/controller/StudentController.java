@@ -25,6 +25,24 @@ public class StudentController {
         return "Inserted " + count + " students (batch) in " + ms + " ms";
     }
 
+    @PutMapping("/{id}/age")
+    public String updateStudentAge(@PathVariable long id, @RequestParam int age) {
+        int updated = studentService.updateAge(id, age);
+        return (updated == 1)
+                ? "Updated student " + id + " age to " + age
+                : "Student " + id + " not found";
+    }
+
+    @DeleteMapping("/{id}")
+    public String deleteStudent(@PathVariable long id) {
+        int deleted = studentService.deleteById(id);
+        return (deleted == 1)
+                ? "Deleted student " + id
+                : "Student " + id + " not found";
+    }
+
+
+
     //    @GetMapping("/batch")
 //    public String insertBatch(@RequestParam int count) {
 //
